@@ -27,6 +27,19 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Rest definition
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+# Spectacular settings
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'API Gestion de Stocks',
+    'DESCRIPTION': 'API pour gérer les stocks de matériels dans une entreprise XXXXX.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,  # optionnel
+    'COMPONENT_SPLIT_REQUEST': True,
+}
 
 # Application definition
 
@@ -38,7 +51,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'contacts'
+    'drf_spectacular',
+    'contacts',
+    'stocks'
 ]
 
 MIDDLEWARE = [
