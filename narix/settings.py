@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-pqu1vxh4p4!726q*+fc5m7p4i6khys1t-@sfh%!hr#*$3@xu9(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Rest definition
 REST_FRAMEWORK = {
@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_spectacular',
     'contacts',
-    'stocks'
+    'stocks',
+    'accounts'
 ]
 
 MIDDLEWARE = [
@@ -137,3 +138,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# User customization
+AUTH_USER_MODEL = 'accounts.CustomUser'
