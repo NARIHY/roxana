@@ -20,21 +20,16 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, Sp
 from django.apps import apps
 from .views import AccueilAPIView  # Make sure AccueilAPIView is defined in narix/views.py
 
-# URL patterns for the API
-# This includes the URLs for the contacts, stocks, and accounts apps,
-# Dynamically include URLs for each installed app that has a urls.py
-api_patterns = []
-resources = ['contacts', 'stocks', 'accounts']
-for resource in resources:
-    if apps.is_installed(resource):
-        api_patterns.append(path(f'{resource}/', include(f'{resource}.urls')))
+
 
 # Main URL patterns for the project
 # This includes the API patterns and the admin interface.
 urlpatterns = [
     path('', AccueilAPIView.as_view(), name='accueil'),
     path('admin/', admin.site.urls),
-    path('api/', include((api_patterns, 'api'))),
+    path('api/contacts/', include('contacts.urls')),
+    path('api/stocks/', include('stocks.urls')),
+    path('api/accounts/', include('accounts.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),  # ← nécessaire pour Swagger
     path('api/docs/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/docs/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),

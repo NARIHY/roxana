@@ -1,6 +1,6 @@
 # accounts/serializers.py
 from rest_framework import serializers
-from .models import CustomUser
+from .models import CustomUser, Role
 
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,3 +29,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     def delete(self, instance):
         instance.delete()
+
+class RoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Role
+        fields = '__all__'
