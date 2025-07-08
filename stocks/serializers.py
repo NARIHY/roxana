@@ -11,6 +11,7 @@ class MaterielSerializer(serializers.ModelSerializer):
     categorie_id = serializers.PrimaryKeyRelatedField(
         queryset=Categorie.objects.all(), source='categorie', write_only=True
     )
+    qr_code_image = serializers.ImageField(read_only=True)
 
     class Meta:
         model = Materiel

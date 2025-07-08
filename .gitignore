@@ -41,3 +41,9 @@ Thumbs.db
 
 # Git
 *.orig
+
+
+# QrCode
+*.png
+*.jpg
+qrcodes/*
