@@ -19,8 +19,10 @@ from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 from django.apps import apps
 from .views import AccueilAPIView  # Make sure AccueilAPIView is defined in narix/views.py
+from rest_framework.permissions import AllowAny
 
-
+class PublicSchemaView(SpectacularAPIView):
+    permission_classes = [AllowAny]
 
 # Main URL patterns for the project
 # This includes the API patterns and the admin interface.
@@ -30,7 +32,7 @@ urlpatterns = [
     path('api/contacts/', include('contacts.urls')),
     path('api/stocks/', include('stocks.urls')),
     path('api/accounts/', include('accounts.urls')),
-    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),  # ← nécessaire pour Swagger
+    path('api/schema/', PublicSchemaView.as_view(), name='schema'),  # ← nécessaire pour Swagger
     path('api/docs/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/docs/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]

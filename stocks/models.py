@@ -11,16 +11,23 @@ class Categorie(models.Model):
     def __str__(self):
         return self.nom
 
+class Status(models.Model):
+    nom = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.nom
+
 class Materiel(models.Model):
     uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     nom = models.CharField(max_length=100)
     categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE, related_name='materiels')
+    status = models.ForeignKey(Status, on_delete=models.SET_NULL, null=True, blank=True, related_name='materiels')
     description = models.TextField(blank=True)
     date_ajout = models.DateTimeField(auto_now_add=True)
     qr_code_image = models.ImageField(upload_to='qrcodes/', blank=True, null=True)
 
     def __str__(self):
-        return f"{self.nom} - {self.categorie.nom}"
+        return f"{self.nom} - {self.categorie.nom} - {self.status.nom if self.status else 'Sans statut'}"
 
     def save(self, *args, **kwargs):
         if not self.qr_code_image:
@@ -29,6 +36,7 @@ class Materiel(models.Model):
             qr.make(fit=True)
             img = qr.make_image(fill='black', back_color='white')
             buffer = BytesIO()
+            img.save(buffer, format='PNG')
             date_str = datetime.now().strftime('%Y-%m-%d')
             model_name = self.__class__.__name__
             action = 'create' if self._state.adding else 'update'
@@ -39,6 +47,4 @@ class Materiel(models.Model):
 
     @property
     def qr_code_image_url(self):
-        if self.qr_code_image:
-            return self.qr_code_image.url
-        return None
+        return self.qr_code_image.url if self.qr_code_image else None
