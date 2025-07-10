@@ -26,8 +26,14 @@ SECRET_KEY = 'django-insecure-pqu1vxh4p4!726q*+fc5m7p4i6khys1t-@sfh%!hr#*$3@xu9(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# Hosts/domain names that are valid for this site; required if DEBUG is False
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
+# FRONTEND URL
+# This is used to allow CORS requests from the frontend application
+CORS_ALLOWED_ORIGINS = [
+  "http://localhost:5173",
+]
 # Rest definition
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -69,6 +75,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    "corsheaders", 
     'drf_spectacular',
     'rest_framework_simplejwt.token_blacklist',
     'contacts',
@@ -84,6 +91,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    #Cors headers middleware
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = 'narix.urls'
