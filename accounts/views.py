@@ -21,7 +21,12 @@ from .permissions import IsAdminOrReadOnly
 class UserListCreateAPIView(generics.ListCreateAPIView):
     queryset = CustomUser.objects.all().order_by('-date_joined')
     serializer_class = CustomUserSerializer
-    permission_classes = [permissions.IsAuthenticated, IsAdminOrReadOnly]
+    def get_permissions(self):
+        if self.request.method == 'POST':
+            return [permissions.AllowAny()]
+        # Par défaut, nécessite d'être authentifié et admin pour voir la liste
+        return [permissions.IsAuthenticated(), IsAdminOrReadOnly()]
+
 
 class UserDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = CustomUser.objects.all()

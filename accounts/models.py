@@ -57,12 +57,23 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def generate_matricule(self):
         today = timezone.now()
-        year = today.strftime("%y")  # ex: 25
-        month = today.strftime("%m")  # ex: 07
-        count = CustomUser.objects.filter(date_joined__month=today.month).count() + 1
+        year = today.strftime("%y")
+        month = today.strftime("%m")
+        gender = self.gender.lower()
+        prefix = self.gender.upper()[0]
 
-        count_format = f"{count:02}" if count < 100 else f"{count:03}"
-        prefix = self.gender.upper()
-        return f"{prefix}{count_format}{month}{year}"
+        # Boucle jusqu'à obtenir un matricule unique
+        while True:
+            count = CustomUser.objects.filter(
+                gender=gender,
+                date_joined__month=today.month
+            ).count() + 1
+
+            count_format = f"{count:02}" if count < 100 else f"{count:03}"
+            matricule = f"{prefix}{count_format}{month}{year}"
+
+            if not CustomUser.objects.filter(matricule=matricule).exists():
+                return matricule
+
     def get_fields(cls):
         return [field.name for field in cls._meta.fields]
